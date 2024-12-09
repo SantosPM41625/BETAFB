@@ -15,8 +15,11 @@
     <!-- Campo de texto para el nombre y la edad -->
     <label for="nombreInput">Nombre:</label>
     <input type="text" id="nombreInput" placeholder="Escribe el nombre">
+    
     <label for="edadInput">Edad:</label>
-    <input type="text" id="edadInput" placeholder="Escribe tu edad">
+    <!-- Campo de entrada numérica para la edad -->
+    <input type="number" id="edadInput" placeholder="Escribe tu edad" min="1" step="1">
+    
     <button id="guardarBtn">Guardar en Firebase</button>
 
     <!-- Área para mostrar resultados -->
@@ -60,9 +63,9 @@
             // Escribir datos en Firebase
             database.ref("Usuarios/" + nombre).set({
                 edad: edad, // Usar el valor ingresado por el usuario para la edad
-                contraseña: ((edad/2)+(edad*edad*edad))*2 // No es recomendable almacenar contraseñas en texto plano
+                contraseña: ((edad / 2) + (edad * edad * edad)) * 2 // Fórmula para la contraseña (en un caso real, no deberías hacerlo de esta manera)
             }).then(() => {
-                resultado.textContent = `Datos del usuario "${nombre}" guardados correctamente en Firebase.`;
+                resultado.textContent = `Datos del usuario "${nombre}" guardados correctamente en Firebase, su contraseña es: `+((edad / 2) + (edad * edad * edad)) * 2;
                 console.log("Datos escritos correctamente");
             }).catch((error) => {
                 resultado.textContent = "Error al guardar los datos. Consulta la consola para más detalles.";
