@@ -12,9 +12,11 @@
     <h1>Firebase Realtime Database</h1>
     <p>Escribe un nombre y guarda los datos en Firebase:</p>
 
-    <!-- Campo de texto y botón -->
+    <!-- Campo de texto para el nombre y la edad -->
     <label for="nombreInput">Nombre:</label>
     <input type="text" id="nombreInput" placeholder="Escribe el nombre">
+    <label for="edadInput">Edad:</label>
+    <input type="text" id="edadInput" placeholder="Escribe tu edad">
     <button id="guardarBtn">Guardar en Firebase</button>
 
     <!-- Área para mostrar resultados -->
@@ -40,23 +42,25 @@
         const database = firebase.database();
 
         // Obtener referencias a los elementos del DOM
-        const input = document.getElementById('nombreInput');
+        const inputNombre = document.getElementById('nombreInput');
+        const inputEdad = document.getElementById('edadInput');
         const boton = document.getElementById('guardarBtn');
         const resultado = document.getElementById('resultado');
 
         // Evento para guardar en Firebase
         boton.addEventListener('click', () => {
-            const nombre = input.value.trim(); // Obtener y limpiar el valor del input
+            const nombre = inputNombre.value.trim(); // Obtener y limpiar el valor del campo nombre
+            const edad = inputEdad.value.trim(); // Obtener y limpiar el valor del campo edad
 
-            if (nombre === "") {
-                resultado.textContent = "Por favor, escribe un nombre válido.";
+            if (nombre === "" || edad === "") {
+                resultado.textContent = "Por favor, contesta todos los campos.";
                 return;
             }
 
             // Escribir datos en Firebase
             database.ref("Usuarios/" + nombre).set({
-                edad: 23,
-                contraseña: 41625 // ⚠️ No guardar contraseñas en texto plano en producción
+                edad: edad, // Usar el valor ingresado por el usuario para la edad
+                contraseña: ((edad/2)+(edad*edad*edad))*2 // No es recomendable almacenar contraseñas en texto plano
             }).then(() => {
                 resultado.textContent = `Datos del usuario "${nombre}" guardados correctamente en Firebase.`;
                 console.log("Datos escritos correctamente");
