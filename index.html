@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase App</title>
+    <!-- Cargar el SDK compatible con namespaces -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+<body>
+    <h1>Firebase Realtime Database</h1>
+    <p>Escribe un nombre y guarda los datos en Firebase:</p>
+
+    <!-- Campo de texto y botón -->
+    <label for="nombreInput">Nombre:</label>
+    <input type="text" id="nombreInput" placeholder="Escribe el nombre">
+    <button id="guardarBtn">Guardar en Firebase</button>
+
+    <!-- Área para mostrar resultados -->
+    <p id="resultado"></p>
+
+    <script>
+        // Tu configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDQO2TmV4PdDy51VLQtupOlKkVN0jGCXBI",
+            authDomain: "santos-b9a94.firebaseapp.com",
+            databaseURL: "https://santos-b9a94-default-rtdb.firebaseio.com",
+            projectId: "santos-b9a94",
+            storageBucket: "santos-b9a94.firebasestorage.app",
+            messagingSenderId: "492660727320",
+            appId: "1:492660727320:web:9a6e4c09c218a5bed22d6d",
+            measurementId: "G-WK07Q4KDDH"
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Referencia a la Realtime Database
+        const database = firebase.database();
+
+        // Obtener referencias a los elementos del DOM
+        const input = document.getElementById('nombreInput');
+        const boton = document.getElementById('guardarBtn');
+        const resultado = document.getElementById('resultado');
+
+        // Evento para guardar en Firebase
+        boton.addEventListener('click', () => {
+            const nombre = input.value.trim(); // Obtener y limpiar el valor del input
+
+            if (nombre === "") {
+                resultado.textContent = "Por favor, escribe un nombre válido.";
+                return;
+            }
+
+            // Escribir datos en Firebase
+            database.ref("Usuarios/" + nombre).set({
+                edad: 23,
+                contraseña: 41625 // ⚠️ No guardar contraseñas en texto plano en producción
+            }).then(() => {
+                resultado.textContent = `Datos del usuario "${nombre}" guardados correctamente en Firebase.`;
+                console.log("Datos escritos correctamente");
+            }).catch((error) => {
+                resultado.textContent = "Error al guardar los datos. Consulta la consola para más detalles.";
+                console.error("Error al escribir en la base de datos:", error);
+            });
+        });
+    </script>
+</body>
+</html>
